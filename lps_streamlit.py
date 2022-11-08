@@ -1,21 +1,11 @@
 import streamlit as st
 import pandas as pd
 
-import tensorflow as tf
-import tensorflow_hub as hub
-import tensorflow_text as text
-from official.nlp import optimization 
-
 with st.sidebar:
   st.header("PoliPad Local Problem Scoping Tool")
   st.write("Input your US state of residence and receive a problem scope based on your state's newsfeed.")
   query = st.text_input('State')
   button = st.button("Load")
-
-#st.title("PoliPad Local Problem Scoping Tool")
-#st.subheader("Input your US state of residence and receive a problem scope based on your state's newsfeed.")
-
-#query = st.text_input('State')
 
 #////////////////////////////////////////////////////////////////////////////////////////////////////////#
 
@@ -80,12 +70,9 @@ if button:
 
 #////////////////////////////////////////////////////////////////////////////////////////////////////////#
 
-  import spacy
-  nlp = spacy.load('en_core_web_sm')
   import re 
   import texthero as hero
   from texthero import preprocessing
-  import unidecode
 
   #define the pre-processing pipeline
   clean_text_pipeline = [
@@ -174,17 +161,11 @@ if button:
       result.append(kw)
     keyword_dataset = pd.DataFrame(result, columns= ['keywords', 'score']) #now we have dataset with keywords column and then their scores in the next column
     keyword_dataset.applymap(str) #make all keywords into string variables
-    #keyword_dataset = keyword_dataset[keyword_dataset.keywords != query]
-    #count = keyword_dataset['keywords'].str.split().str.len() #create count variable
-    #keyword_dataset = keyword_dataset[~(count<2)] #remove keywords that are less than 2 words long
     keyword_dataset = keyword_dataset.nsmallest(5,'score') #get the top 5 keywords with the highest score and order them in descending order
     words = []
     for i in keyword_dataset['keywords']: #get the keywords from our dataset and put it into list 'words'
       words.append(i)
-    #terms = ', '.join(words) #seperate words by comma for easy-to-read format
-    #official = terms.title() #capitalize the first letter for every word for better format
     words = [word.capitalize() for word in words] #capitalize the first letter for every word for better format
-    #return official
     return words
 
   import textdistance
@@ -195,7 +176,6 @@ if button:
     new_titles = dataset[dataset['titles'].str.contains(spec)]
     test = (new_titles.assign(match=new_titles["titles"].map(lambda x: max([textdistance.cosine(x, text) for text in new_titles["titles"]],key=lambda x: x if x != 1 else 0,))).sort_values(by="match").reset_index(drop=True))
     top = test.nsmallest(5,'match')
-    #final = top['urls'].tolist() #this is the REAL feature, but for now, we're going to do the 2nd one
     final = top['titles'].tolist()
     return final
 
