@@ -1,0 +1,8 @@
+streamlit==1.14.0
+pygooglenews==0.1.2
+newsapi-python==0.2.6
+texthero==1.0.8
+scikit-multilearn==0.2.0
+vaderSentiment==3.3.2
+keybert==0.7.0
+textdistance==4.5.0
