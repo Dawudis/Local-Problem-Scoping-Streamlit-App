@@ -10,32 +10,16 @@ with st.sidebar:
 #////////////////////////////////////////////////////////////////////////////////////////////////////////#
 
 if button:
-  from pygooglenews import GoogleNews
 
-  gn = GoogleNews()
+  from GoogleNews import GoogleNews
+  googlenews = GoogleNews()
 
-  def get_titles(search):
-    stories = []
-    search = gn.search(search)
-    newsitem = search['entries']
-    for item in newsitem:
-      story = item.title
-      stories.append(story)
-    return stories
-
-  def get_links(search):
-    links = []
-    search = gn.search(search)
-    newsitem = search['entries']
-    for item in newsitem:
-      link = item.link
-      links.append(link)
-    return links
-
-  first = get_titles(query)
-  first_links = get_links(query)
-  df = pd.DataFrame(first, columns = ['titles'])
-  df['urls'] = first_links
+  googlenews.get_news(query)
+  titles = googlenews.get_texts()
+  urls = googlenews.get_links()
+  
+  df = pd.DataFrame(titles, columns = ['titles'])
+  df['urls'] = urls
 
   #newsapi
 
