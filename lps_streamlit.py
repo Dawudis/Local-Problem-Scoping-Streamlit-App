@@ -177,7 +177,13 @@ if button:
     test = (new_titles.assign(match=new_titles["titles"].map(lambda x: max([textdistance.cosine(x, text) for text in new_titles["titles"]],key=lambda x: x if x != 1 else 0,))).sort_values(by="match").reset_index(drop=True))
     top = test.nsmallest(5,'match')
     final = top['titles'].tolist()
-    return final
+    final_urls = top['urls'].tolist()
+    st.markdown('<a href="{}" rel="noopener noreferrer" target="_blank">{}</a>'.format(final_urls[0], final[0]),unsafe_allow_html=True)
+    st.markdown('<a href="{}" rel="noopener noreferrer" target="_blank">{}</a>'.format(final_urls[1], final[1]),unsafe_allow_html=True)
+    st.markdown('<a href="{}" rel="noopener noreferrer" target="_blank">{}</a>'.format(final_urls[2], final[2]),unsafe_allow_html=True)
+    st.markdown('<a href="{}" rel="noopener noreferrer" target="_blank">{}</a>'.format(final_urls[3], final[3]),unsafe_allow_html=True)
+    st.markdown('<a href="{}" rel="noopener noreferrer" target="_blank">{}</a>'.format(final_urls[4], final[4]),unsafe_allow_html=True)
+    
 
 #////////////////////////////////////////////////////////////////////////////////////////////////////////#
 
@@ -191,14 +197,13 @@ if button:
       st.header(name + ": 0%")
     else:
       keywords = keyword_extraction(dataset1) #find keywords
-      urls = most_relevant(keywords, dataset1) #find most relevant articles
       percentage = round(((len(dataset1.index)) / len(data1.index)) * 100) #calculate percentage of articles that fall under category
       st.header(name + ": " + str(percentage) + "%")
       if len(dataset1.index) < 5:
         with st.expander('More Info.'):
           st.subheader("Stories")
-          for i in urls:
-            st.markdown("- " + i)
+          for i in dataset1.index: 
+            st.markdown('<a href="{}" rel="noopener noreferrer" target="_blank">{}</a>'.format(dataset1['urls'][i], dataset1['titles'][i]),unsafe_allow_html=True)
           st.write("")
         st.write("")
       else:
@@ -206,10 +211,9 @@ if button:
           st.subheader("Keywords:")
           st.write(str(keywords))
           st.subheader("Most Relevant Stories:")
-          for i in urls:
-            st.markdown("- " + i)
-            st.write("")
+          most_relevant(keywords, dataset1)
           st.write("")
+        st.write("")
 
   st.title(query + "'s Problem Scope")
 
