@@ -1,6 +1,5 @@
 streamlit==1.14.0
 pandas==1.3.5
--e git://github.com/Alyetama/pygooglenews.git
 newsapi-python==0.2.6
 regex==2022.6.2
 texthero==1.0.8
