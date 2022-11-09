@@ -1,5 +1,6 @@
 streamlit==1.14.0
 pandas==1.3.5
+GoogleNews==1.6.5
 newsapi-python==0.2.6
 regex==2022.6.2
 texthero==1.0.8
